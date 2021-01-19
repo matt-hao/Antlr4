@@ -4,20 +4,24 @@ import com.matt.model.Program;
 import com.matt.util.Antlr4Util;
 import org.antlr.v4.runtime.tree.ParseTree;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Scanner;
 
 public class Jsh {
 
     public static String currentDirectory = System.getProperty("user.dir");
 
-    public static void eval(String cmdline) {
+    public static void eval(String cmdline) throws IOException {
         if (cmdline == null || cmdline.trim().length() == 0)
             return;
 
         ParseTree tree = Antlr4Util.buildParserTree(cmdline);
         AntlrToProgram antlr = new AntlrToProgram();
         Program program = antlr.visit(tree);
-        program.produce();
+        OutputStreamWriter writer =new OutputStreamWriter(System.out);
+        writer.write(program.produce());
+        writer.flush();
     }
 
     public static void main(String[] args) {

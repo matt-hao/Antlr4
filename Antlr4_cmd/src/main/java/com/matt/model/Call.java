@@ -5,7 +5,6 @@ import com.matt.model.cmd.AppFactory;
 import com.matt.model.cmd.Application;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.List;
 
 public class Call extends Command implements Producer {
@@ -27,7 +26,7 @@ public class Call extends Command implements Producer {
     public String produce() {
         String appName = argument.args.get(0);
         List<String> args = argument.args.subList(1, argument.args.size());
-        Application app = AppFactory.produceApp(appName, args, this.ioInput, this.ioOutput, new OutputStreamWriter(System.out));
+        Application app = AppFactory.produceApp(appName, args, this.ioInput, this.ioOutput);
         try {
             return app.exec();
         } catch (IOException e) {
@@ -42,7 +41,7 @@ public class Call extends Command implements Producer {
             throw new RuntimeException("Input for produceWithInput method should not be empty");
         String appName = argument.args.get(0);
         List<String> args = argument.args.subList(1, argument.args.size());
-        Application app = AppFactory.produceApp(appName, args, input, this.ioOutput, new OutputStreamWriter(System.out));
+        Application app = AppFactory.produceApp(appName, args, input, this.ioOutput);
         try {
             return app.exec();
         } catch (IOException e) {

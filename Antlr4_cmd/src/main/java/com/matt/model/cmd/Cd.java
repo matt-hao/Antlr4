@@ -5,12 +5,11 @@ import com.matt.Jsh;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.List;
 
 public class Cd extends Application {
-    public Cd(List<String> args, String inputFile, String outputFile, OutputStreamWriter writer) {
-        super(args, inputFile, outputFile, writer);
+    public Cd(List<String> args, String inputFile, String outputFile) {
+        super(args, inputFile, outputFile);
     }
 
     @Override

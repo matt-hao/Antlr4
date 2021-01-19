@@ -6,7 +6,6 @@ import com.matt.Jsh;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -17,8 +16,8 @@ import java.util.List;
 
 public class Tail extends Application {
 
-    public Tail(List<String> args, String inputFile, String outputFile, OutputStreamWriter writer) {
-        super(args, inputFile, outputFile, writer);
+    public Tail(List<String> args, String inputFile, String outputFile) {
+        super(args, inputFile, outputFile);
     }
 
     @Override
@@ -46,6 +45,7 @@ public class Tail extends Application {
         }
         File tailFile = new File(Jsh.currentDirectory + File.separator + tailArg);
         if (tailFile.exists()) {
+            StringBuilder stringBuilder = new StringBuilder();
             Charset encoding = StandardCharsets.UTF_8;
             Path filePath = Paths.get((String) Jsh.currentDirectory + File.separator + tailArg);
             ArrayList<String> storage = new ArrayList<>();
@@ -61,15 +61,14 @@ public class Tail extends Application {
                     index = storage.size() - tailLines;
                 }
                 for (int i = index; i < storage.size(); i++) {
-                    writer.write(storage.get(i) + System.getProperty("line.separator"));
-                    writer.flush();
+                    stringBuilder.append(storage.get(i)).append(System.getProperty("line.separator"));
                 }
+                return stringBuilder.toString();
             } catch (IOException e) {
                 throw new RuntimeException("tail: cannot open " + tailArg);
             }
         } else {
             throw new RuntimeException("tail: " + tailArg + " does not exist");
         }
-        return "";
     }
 }

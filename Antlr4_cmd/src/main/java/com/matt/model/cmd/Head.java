@@ -6,7 +6,6 @@ import com.matt.Jsh;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -15,8 +14,8 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class Head extends Application {
-    public Head(List<String> args, String inputFile, String outputFile, OutputStreamWriter writer) {
-        super(args, inputFile, outputFile, writer);
+    public Head(List<String> args, String inputFile, String outputFile) {
+        super(args, inputFile, outputFile);
     }
 
     @Override
@@ -44,23 +43,22 @@ public class Head extends Application {
         }
         File headFile = new File(Jsh.currentDirectory + File.separator + headArg);
         if (headFile.exists()) {
+            StringBuilder stringBuilder = new StringBuilder();
             Charset encoding = StandardCharsets.UTF_8;
             Path filePath = Paths.get(Jsh.currentDirectory + File.separator + headArg);
             try (BufferedReader reader = Files.newBufferedReader(filePath, encoding)) {
                 for (int i = 0; i < headLines; i++) {
                     String line;
                     if ((line = reader.readLine()) != null) {
-                        writer.write(line);
-                        writer.write(System.getProperty("line.separator"));
-                        writer.flush();
+                        stringBuilder.append(line).append(System.getProperty("line.separator"));
                     }
                 }
+                return stringBuilder.toString();
             } catch (IOException e) {
                 throw new RuntimeException("head: cannot open " + headArg);
             }
         } else {
             throw new RuntimeException("head: " + headArg + " does not exist");
         }
-        return "";
     }
 }

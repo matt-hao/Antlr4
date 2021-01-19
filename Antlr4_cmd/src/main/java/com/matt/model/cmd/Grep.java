@@ -5,7 +5,6 @@ import com.matt.Jsh;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -16,12 +15,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Grep extends Application {
-    public Grep(List<String> args, String inputFile, String outputFile, OutputStreamWriter writer) {
-        super(args, inputFile, outputFile, writer);
+    public Grep(List<String> args, String inputFile, String outputFile) {
+        super(args, inputFile, outputFile);
     }
 
     @Override
-    public String exec()  {
+    public String exec() {
         if (args.size() < 2) {
             throw new RuntimeException("grep: wrong number of arguments");
         }
@@ -38,6 +37,7 @@ public class Grep extends Application {
             }
             filePathArray[i] = filePath;
         }
+        StringBuilder stringBuilder = new StringBuilder();
         for (int j = 0; j < filePathArray.length; j++) {
             Charset encoding = StandardCharsets.UTF_8;
             try (BufferedReader reader = Files.newBufferedReader(filePathArray[j], encoding)) {
@@ -46,18 +46,17 @@ public class Grep extends Application {
                     Matcher matcher = grepPattern.matcher(line);
                     if (matcher.find()) {
                         if (numOfFiles > 1) {
-                            writer.write(args.get(j + 1));
-                            writer.write(":");
+                            stringBuilder.append(args.get(j + 1)).append(":");
                         }
-                        writer.write(line);
-                        writer.write(System.getProperty("line.separator"));
-                        writer.flush();
+                        stringBuilder.append(line).append(System.getProperty("line.separator"));
                     }
                 }
+
             } catch (IOException e) {
                 throw new RuntimeException("grep: cannot open " + args.get(j + 1));
             }
+
         }
-        return "";
+        return stringBuilder.toString();
     }
 }

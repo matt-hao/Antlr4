@@ -7,7 +7,6 @@ public class Program implements Producer {
         this.command = command;
     }
 
-
     @Override
     public String produce() {
         return this.command.produce();

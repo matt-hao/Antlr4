@@ -5,12 +5,11 @@ import com.matt.Jsh;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.List;
 
 public class Ls extends Application {
-    public Ls(List<String> args, String inputFile, String outputFile, OutputStreamWriter writer) {
-        super(args, inputFile, outputFile, writer);
+    public Ls(List<String> args, String inputFile, String outputFile) {
+        super(args, inputFile, outputFile);
     }
 
     @Override
@@ -26,21 +25,19 @@ public class Ls extends Application {
         try {
             File[] listOfFiles = currDir.listFiles();
             if (listOfFiles != null && listOfFiles.length != 0) {
+                StringBuilder stringBuilder = new StringBuilder();
                 boolean atLeastOnePrinted = false;
                 for (File file : listOfFiles) {
                     if (!file.getName().startsWith(".")) {
-                        writer.write(file.getName());
-                        writer.write("\t");
-                        writer.flush();
+                        stringBuilder.append(file.getName()).append("\t");
                         atLeastOnePrinted = true;
                     }
                 }
                 if (atLeastOnePrinted) {
-                    writer.write(System.getProperty("line.separator"));
-                    writer.flush();
+                    stringBuilder.append(System.getProperty("line.separator"));
                 }
+                return stringBuilder.toString();
             }
-
         } catch (NullPointerException e) {
             throw new RuntimeException("ls: no such directory");
         }
