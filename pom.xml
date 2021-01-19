@@ -12,7 +12,7 @@
 
     <modules>
         <module>Antlr4_study</module>
-        <module>Jsh</module>
+        <module>Antlr4_cmd</module>
     </modules>
 
     <dependencies>
