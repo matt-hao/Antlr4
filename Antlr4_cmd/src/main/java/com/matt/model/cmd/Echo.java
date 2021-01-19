@@ -14,7 +14,6 @@ public class Echo extends Application {
         for (String arg : args) {
             stringBuilder.append(arg).append(" ");
         }
-        stringBuilder.append(System.getProperty("line.separator"));
         return stringBuilder.toString();
     }
 }

@@ -22,6 +22,7 @@ public class Jsh {
         OutputStreamWriter writer =new OutputStreamWriter(System.out);
         writer.write(program.produce());
         writer.flush();
+        writer.close();
     }
 
     public static void main(String[] args) {

@@ -21,7 +21,7 @@ public class AntlrToArgument extends JshGrammarBaseVisitor<Argument> {
                     args.add(symbol.getText());
                 }
             } else if (o instanceof JshGrammarParser.QuotedContext) {
-                args.add(antlrToQuoted.visit(o).toString());
+                args.add(antlrToQuoted.visit(o).getQuoted());
             }
         }
         return new Argument(args);

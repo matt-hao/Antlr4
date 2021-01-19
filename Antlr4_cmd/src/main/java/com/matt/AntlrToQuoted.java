@@ -22,33 +22,35 @@ public class AntlrToQuoted extends JshGrammarBaseVisitor<Quoted> {
                 ParseTree tree = Antlr4Util.buildParserTree(mid);
                 AntlrToProgram antlrToProgram = new AntlrToProgram();
                 Program program = antlrToProgram.visit(tree);
-                quoted = new Quoted("'" + left + program.toString() + right + "'");
+                quoted = new Quoted("'" + left + program.produce() + right + "'");
             } else {
                 quoted = new Quoted(singleQuoted);
             }
         } else if (ctx.DOUBLEQUOTED() != null) {
-            String douboleQuoted = ctx.DOUBLEQUOTED().getText();
-            if (douboleQuoted.contains("`")) {
-                int start = douboleQuoted.indexOf("`");
-                int end = douboleQuoted.lastIndexOf("`");
+            String doubleQuoted = ctx.DOUBLEQUOTED().getText();
+            doubleQuoted = doubleQuoted.substring(1, doubleQuoted.length() - 1);
+            if (doubleQuoted.contains("`")) {
+                int start = doubleQuoted.indexOf("`");
+                int end = doubleQuoted.lastIndexOf("`");
 
-                String left = douboleQuoted.substring(0, start);
-                String right = douboleQuoted.substring(end + 1);
-                String mid = douboleQuoted.substring(start + 1, end);
+                String left = doubleQuoted.substring(0, start);
+                String right = doubleQuoted.substring(end + 1);
+                String mid = doubleQuoted.substring(start + 1, end);
 
                 ParseTree tree = Antlr4Util.buildParserTree(mid);
                 AntlrToProgram antlrToProgram = new AntlrToProgram();
                 Program program = antlrToProgram.visit(tree);
-                quoted = new Quoted("'" + left + program.toString() + right + "'");
+                quoted = new Quoted("\"" + left + program.produce() + right + "\"");
             } else {
-                quoted = new Quoted(douboleQuoted);
+                quoted = new Quoted(doubleQuoted);
             }
         } else {
             //backQuoted
-            ParseTree tree = Antlr4Util.buildParserTree(ctx.BACKQUOTED().getText());
+            String text = ctx.BACKQUOTED().getText();
+            ParseTree tree = Antlr4Util.buildParserTree(text.substring(1, text.length() - 1));
             AntlrToProgram antlrToProgram = new AntlrToProgram();
             Program program = antlrToProgram.visit(tree);
-            quoted = new Quoted(program.toString());
+            quoted = new Quoted(program.produce());
         }
         return quoted;
     }

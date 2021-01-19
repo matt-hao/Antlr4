@@ -13,6 +13,7 @@ pipe: call '|' call | pipe '|' call;
 //grep "Interesting String" < text1.txt > result.txt; cat aa.txt | grep "a" | grep "b"
 //wc -l `find -name '*.java'`
 //cat articles/* | grep "Interesting String"
+//echo "`echo hello`" todo.....
 //call: (argument)+ | argument (redirection)*
 //call: argument (redirection | argument)*;
 call: argument (redirection)*;
