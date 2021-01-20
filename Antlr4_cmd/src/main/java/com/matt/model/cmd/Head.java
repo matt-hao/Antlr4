@@ -23,11 +23,13 @@ public class Head extends Application {
         if (args.isEmpty()) {
             throw new RuntimeException("head: missing arguments");
         }
-        if (args.size() != 1 && args.size() != 3) {
+        if (!(args.size() == 1 || args.size() == 3)) {
             throw new RuntimeException("head: wrong arguments");
         }
-        if (args.size() == 3 && !args.get(0).equals("-n")) {
-            throw new RuntimeException("head: wrong argument " + args.get(0));
+        if (args.size() == 3 ) {
+            if(!args.get(0).equals("-n"))
+                throw new RuntimeException("head: wrong argument " + args.get(0));
+            // todo.... number? negative number? double or float? write a function to rule out wrong case
         }
         int headLines = 10;
         String headArg;

@@ -20,28 +20,26 @@ public class Cat extends Application {
 
     @Override
     public String exec() throws IOException {
-        if (args.isEmpty()) {
+        if (args.isEmpty())
             throw new RuntimeException("cat: missing arguments");
-        } else {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (String arg : args) {
-                Charset encoding = StandardCharsets.UTF_8;
-                File currFile = new File(Jsh.currentDirectory + File.separator + arg);
-                if (currFile.exists()) {
-                    Path filePath = Paths.get(Jsh.currentDirectory + File.separator + arg);
-                    try (BufferedReader reader = Files.newBufferedReader(filePath, encoding)) {
-                        String line;
-                        while ((line = reader.readLine()) != null) {
-                            stringBuilder.append(line).append(System.getProperty("line.separator"));
-                        }
-                    } catch (IOException e) {
-                        throw new RuntimeException("cat: cannot open " + arg);
-                    }
-                } else {
-                    throw new RuntimeException("cat: file does not exist");
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String arg : args) {
+            Charset encoding = StandardCharsets.UTF_8;
+            File currFile = new File(Jsh.currentDirectory + File.separator + arg);
+            if (!currFile.exists())
+                throw new RuntimeException("cat: file does not exist");
+
+            Path filePath = Paths.get(Jsh.currentDirectory + File.separator + arg);
+            try (BufferedReader reader = Files.newBufferedReader(filePath, encoding)) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    stringBuilder.append(line).append(System.getProperty("line.separator"));
                 }
+            } catch (IOException e) {
+                throw new RuntimeException("cat: cannot open " + arg);
             }
-            return stringBuilder.toString();
         }
+        return stringBuilder.toString();
     }
 }

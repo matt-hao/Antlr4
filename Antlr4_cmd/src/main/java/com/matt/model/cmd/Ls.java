@@ -22,25 +22,22 @@ public class Ls extends Application {
         } else {
             throw new RuntimeException("ls: too many arguments");
         }
-        try {
-            File[] listOfFiles = currDir.listFiles();
-            if (listOfFiles != null && listOfFiles.length != 0) {
-                StringBuilder stringBuilder = new StringBuilder();
-                boolean atLeastOnePrinted = false;
-                for (File file : listOfFiles) {
-                    if (!file.getName().startsWith(".")) {
-                        stringBuilder.append(file.getName()).append("\t");
-                        atLeastOnePrinted = true;
-                    }
-                }
-                if (atLeastOnePrinted) {
-                    stringBuilder.append(System.getProperty("line.separator"));
-                }
-                return stringBuilder.toString();
+        File[] listOfFiles = currDir.listFiles();
+        if (listOfFiles == null || listOfFiles.length == 0)
+            return "";
+
+        StringBuilder stringBuilder = new StringBuilder();
+        boolean atLeastOnePrinted = false;
+        for (File file : listOfFiles) {
+            if (file == null || file.getName().length() == 0) continue;
+            if (!file.getName().startsWith(".")) {
+                stringBuilder.append(file.getName()).append("\t");
+                atLeastOnePrinted = true;
             }
-        } catch (NullPointerException e) {
-            throw new RuntimeException("ls: no such directory");
         }
-        return "";
+        if (atLeastOnePrinted) {
+            stringBuilder.append(System.getProperty("line.separator"));
+        }
+        return stringBuilder.toString();
     }
 }
